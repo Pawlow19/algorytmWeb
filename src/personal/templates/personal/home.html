@@ -1,0 +1,92 @@
+<!-- Strona główna -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style type="text/css">
+
+	@media (max-width: 768px) { 
+		.right-column{
+			margin-left: 0px;
+		}
+	}
+
+	@media (min-width: 768px) { 
+		.right-column{
+			margin-left: 20px;
+		}
+	}
+
+	.blog-post-container{
+		background-color: #fff;
+		margin-bottom: 20px;
+		width: 100%;
+	}
+	.create-post-bar{
+		background-color: #fff;
+		margin-bottom:20px;
+	}
+
+	.left-column{
+		padding:0px;
+	}
+
+	.right-column{
+		padding:0px;
+	}
+	.lead{
+		font-size: 17px;
+	}
+</style>
+<div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+      <h1 class="display-4 fw-normal">Witamy na stronie głównej firmy <img src="{% static 'logo_algorytm.png' %}" alt="Logo Algorytm" width="120" height="69"></h1>
+      <p class="fs-5 text-muted">Podstawowym zajęciem firmy <span class="text-danger">Algorytm</span> <br> jest edukacja <span class="font-weight-bold">matematyczna</span> w systemie  <span class="font-weight-bold">"One to One"</span> oraz <span class="font-weight-bold">edukacja sportowa</span>. <br> Dbamy zatem i o ciało i o ducha.</p>
+</div>
+<hr>
+<div class="container">
+	<div class="row">
+
+		
+
+		<!-- Blog feed -->
+		<div class="left-column col-lg-7 offset-lg-1">
+			<!-- Top 'create post' bar -->
+			<div class="d-lg-none mb-3">
+				{% if request.user.is_authenticated %}
+					<div class="card m-auto d-flex flex-column p-3">
+						<img class="img-fluid d-block m-auto pb-2" src="{% static 'penNpaper.jpg' %}" width="62" height="72">
+						<p class="lead">Strona wyglądałaby znacznie lepiej, gdybyś dodał jeszcze kilka postów!</p>
+						<p class="m-auto"><a class="btn btn-danger" href="{% url 'blog:create' %}">Utwórz post</a></p>
+					</div>
+				{% endif %}
+			</div>
+			<!-- end Top 'create post' bar -->
+
+			<!-- Blog posts-->
+			{% for post in blog_posts %}
+				<div class="blog-post-container">
+					{% include 'blog/snippets/blog_post_snippet.html' with blog_post=post %}
+				</div>
+			{% endfor %}
+			<!-- End Blog posts-->
+		</div>
+		<!-- End Blog feed -->
+
+
+		<!-- Right 'create post' column-->
+		{% if request.user.is_authenticated %}
+      		<div class="right-column col-lg-3 d-lg-flex d-none flex-column">
+				<div class="create-post-bar">
+					<img class="img-fluid d-block m-auto pb-2" src="{% static 'penNpaper.jpg' %}" width="62" height="72">
+					<p class="lead">Strona wyglądałaby znacznie lepiej, gdybyś dodał jeszcze kilka postów!</p>
+					<a class="w-100 btn btn-lg btn-danger" href="{% url 'blog:create' %}">Utwórz post</a>
+				</div>
+			</div>
+      	{% else %}
+      		<iframe class="right-column d-lg-flex d-none" frameborder='no' height='250' scrolling='no' src='https://dobrapogoda24.pl/widgets/sq-250?city=kielce' title='Prognoza pogody' width='300'></iframe>
+      	{% endif %}
+      	<!-- End Right 'create post' column-->
+	</div>
+</div>
+
+{% endblock content %}

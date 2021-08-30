@@ -1,0 +1,15 @@
+<!-- Strona potwierdzająca zalogowanie -->
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+	<div class="d-flex flex-column">
+		<p class="m-auto">Musisz być zalogowany aby korzystać z tej strony.</p>
+		<p class="m-auto">
+			<a class="text-danger" href="{% url 'login' %}">Zaloguj się</a>.
+		</p>
+	</div>
+</div>
+
+{% endblock content %}

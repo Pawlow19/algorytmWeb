@@ -1,0 +1,96 @@
+<!-- Formularz zarządzania kontem -->
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+<style type="text/css">
+	.form-signin {
+		width: 100%;
+		max-width: 330px;
+		padding: 15px;
+		margin: auto;
+	}
+
+	.form-signin .form-floating:focus-within {
+		z-index: 2;
+	}
+
+	.form-signin input[type="email"] {
+		margin-bottom: 10px;
+		border-bottom-right-radius: 0;
+		border-bottom-left-radius: 0;
+	}
+
+	.form-signin input[type="text"] {
+		margin-bottom: 10px;
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+	}
+	.h3{
+		text-align: center;
+	}
+	.blog-posts{
+    max-width: 500px;
+    width: 100%;
+    margin: auto;
+  }
+</style>
+
+<main class="form-signin">
+  <form method="post">{% csrf_token %}
+   	 
+    <h1 class="h3 mb-3 fw-normal">Konto</h1>
+
+    <div class="form-floating">
+    	{% include 'snippets/logo_medium.html' %}
+      <input type="email" name="email" class="form-control" id="floatingInput" placeholder="Adres email" value={{account_form.initial.email}}>
+      
+    </div>
+    <div class="form-floating">
+      <input type="text" name="username" class="form-control" id="floatingUsername" placeholder="Nazwa użytkownika" value={{account_form.initial.username}}>
+      
+    </div>
+
+	{% for field in account_form %}
+		{% for error in field.errors %}
+			<p style="color: red;">{{error}}</p>
+		{% endfor %}
+	{% endfor %}
+	
+	{% if account_form.non_field_errors %}
+		<div style="color:red;">
+			<p>{{account_form.non_field_errors}}</p>
+		</div>
+	{% endif %}
+
+	{% if success_message %}
+		<p style="color:green; text-align: center;">{{success_message}}</p>
+	{% endif %}
+
+    <button class="w-100 btn btn-lg btn-danger" type="submit">Zapisz zmiany</button>
+
+  </form>
+  <hr>
+  <a class="w-100 btn btn-lg btn-danger" href="{% url 'password_change' %}">Zmień hasło</a>
+</main>
+
+<hr>
+
+<div class="container mt-4 p-4">
+  <div class="row">
+    <div class="blog-posts">
+      <h3 class="mb-3 font-weight-normal">Twoje posty:</h3>
+      {% if blog_posts %}
+        <ul class="list-group">
+        {% for post in blog_posts %}
+          <a class="text-danger" href="{% url 'blog:detail' post.slug %}" style="text-decoration: none;"><li class="list-group-item">{{post}}</li></a>
+        {% endfor %}
+        </ul>
+      {% else %}
+        <p>Nie utworzyłeś jeszcze żadnego postu, kliknij <a class="text-danger" href="{% url 'blog:create' %}">tutaj</a> aby utworzyć post.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock content %}
